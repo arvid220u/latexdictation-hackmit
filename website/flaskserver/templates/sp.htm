@@ -2,7 +2,9 @@
 <!-- saved from url=(0139)https://htmlpreview.github.io/?https://github.com/Azure-Samples/SpeechToText-WebSockets-Javascript/blob/preview/samples/browser/Sample.html -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!--<base href="https://raw.githubusercontent.com/Azure-Samples/SpeechToText-WebSockets-Javascript/preview/samples/browser/Sample.html">--><base href=".">
     <title>LaTeX Dictation</title>
-    
+
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+ 
 </head>
 <body style="font-family:&#39;Helvetica Neue&#39;,Helvetica,Arial,sans-serif; font-size:13px;">
     <div id="warning" style="display: none;">
@@ -119,6 +121,14 @@
                 <td align="left"><span id="statusDiv"></span></td>
             </tr>
         </tbody></table>
+        <p id="rawlatex">
+            temp
+        </p>
+        <p id="displaylatex">
+            temp
+            $$1$$
+        </p>
+
     </div>
 
     <!-- SDK REFERENCE -->
@@ -358,12 +368,15 @@
                 hypothesisDiv.innerHTML = text;
 
 
-            fetch('https://matteklubbenfibonacci.se/api/' + text)
+            fetch('https://matteklubbenfibonacci.se/api?text=' + text)
                 .then(function(response) {
                     return response.text();
                 })
                 .then(function(mytext) {
                     console.log(mytext)
+                    document.getElementById("rawlatex").innerHTML = mytext;
+                    document.getElementById("displaylatex").innerHTML = "$$" + mytext + "$$";
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,"displaylatex"]);
                 });
 
 

@@ -51,12 +51,14 @@ def close_db(error):
 
 
 
-@app.route("/api")
+@app.route("/api", methods=['GET'])
 def home():
 
+    d = request.args['text']
 
+    print(d)
 
-    return "hej"
+    return d + 'hej'
 
 
 
