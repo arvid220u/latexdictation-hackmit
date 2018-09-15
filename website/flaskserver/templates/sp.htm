@@ -389,7 +389,7 @@
                 hypothesisDiv.innerHTML = text;
 
 
-            fetch('https://matteklubbenfibonacci.se/api?text=' + text)
+            fetch('https://matteklubbenfibonacci.se/api/' + text)
                 .then(function(response) {
                     return response.text();
                 })
