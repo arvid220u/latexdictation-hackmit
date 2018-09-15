@@ -10,6 +10,6 @@ def home():
     return app.send_static_file('static/index.html')
 
 from main import text2latex
-@app.route("/api/<text>")
+@app.route("/api/<string:text>")
 def API(text):
     return text2latex(text)
