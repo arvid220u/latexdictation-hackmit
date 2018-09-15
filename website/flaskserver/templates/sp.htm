@@ -357,16 +357,26 @@
             else 
                 hypothesisDiv.innerHTML = text;
 
-            var length = hypothesisDiv.innerHTML.length;
+
+            fetch('https://matteklubbenfibonacci.se/api/' + text)
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(mytext) {
+                    console.log(mytext)
+                });
+
+
+            /*var length = hypothesisDiv.innerHTML.length;
             if (length > 403) {
                 hypothesisDiv.innerHTML = "..." + hypothesisDiv.innerHTML.substr(length-400, length);
-            }
+            }*/
         }
 
         function OnSpeechEndDetected() {
             stopBtn.disabled = true;
         }
-
+    
         function UpdateRecognizedPhrase(json) {
             hypothesisDiv.innerHTML = "";
             phraseDiv.innerHTML += json + "\n";
