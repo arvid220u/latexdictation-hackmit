@@ -64,3 +64,14 @@ def home():
 def hej():
     #return "hejd"
     return render_template("sp.htm")
+
+
+
+
+@app.route("/reset")
+def reset():
+    realreset()
+
+def realreset():
+    # RESET gunicorn!
+    process = subprocess.call("./restart.sh", shell=True)
