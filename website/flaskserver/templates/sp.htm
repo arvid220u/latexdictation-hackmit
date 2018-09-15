@@ -12,7 +12,7 @@
         <h2 style="font-weight:500;">Please execute <code>npm run bundle</code> and reload.</h2>
     </div>
     <div id="content" style="display: block;">
-        <table width="100%">
+        <table width="100%" style="display:none;">
             <tbody><tr>
                 <td></td>
                 <td>
@@ -92,8 +92,6 @@
             <tr>
                 <td></td>
                 <td>
-                    <button id="startBtn">Start</button>
-                    <button id="stopBtn" disabled="disabled">Stop</button>
                     <input type="file" id="filePicker" accept=".wav" style="display:none">
                 </td>
             </tr>
@@ -117,10 +115,17 @@
                 </td>
             </tr>
             <tr>
-                <td align="right">Status:</td>
-                <td align="left"><span id="statusDiv"></span></td>
             </tr>
         </tbody></table>
+
+
+
+
+
+        <div id='allcontent'>
+        <h1>LaTeX Dictation</h1>
+                    <button id="startBtn">Start</button>
+                    <button id="stopBtn" disabled="disabled">Stop</button>
         <p id="rawlatex">
             temp
         </p>
@@ -129,7 +134,23 @@
             $$1$$
         </p>
 
+        <span>Status: </span>
+                <span id="statusDiv"></span>
+
     </div>
+
+    </div>
+
+    <style>
+#allcontent {
+    width:100%;
+    text-align:center;
+}
+            #rawlatex {
+                font-family: monospace;
+                    font-size: 2em;
+            }
+    </style>
 
     <!-- SDK REFERENCE -->
     <script type="text/htmlpreview" src="./spp/speech.sdk.bundle.js"></script>
