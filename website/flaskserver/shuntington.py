@@ -18,8 +18,8 @@ def peek(stack):
     return stack[-1] if stack else None
  
 def apply_operator(operators, values):
-    print operators
-    print values
+    print(operators)
+    print(values)
     operator = operators.pop()
     right = values.pop()
     left = values.pop()
@@ -57,5 +57,5 @@ def evaluate(expression):
     while peek(operators) is not None:
         apply_operator(operators, values)
 
-    print values
+    print(values)
     return values[0]
