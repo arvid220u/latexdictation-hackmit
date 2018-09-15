@@ -1,0 +1,2 @@
+# latexdictation
+LaTeX dictation.
