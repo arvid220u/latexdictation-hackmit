@@ -15,7 +15,6 @@ from main import text2latex
 def API(text):
     return text2latex(text)
 
-
 @app.route("/")
 def index():
     return render_template("sp.htm")

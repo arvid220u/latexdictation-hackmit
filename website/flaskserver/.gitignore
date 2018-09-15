@@ -7,3 +7,4 @@ grading/*
 judgevenv/*
 logs/*
 config.py
+*.pyc
