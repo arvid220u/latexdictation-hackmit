@@ -8,9 +8,6 @@ from datetime import datetime
 import time
 import config as turingconfig
 
-# set timezone
-os.environ["TZ"] = "Europe/Stockholm"
-
 from flask import *
 app = Flask(__name__)
 app.config.from_object(__name__) # configure from this file
