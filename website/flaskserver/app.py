@@ -51,7 +51,7 @@ def close_db(error):
 
 
 
-@app.route("/")
+@app.route("/api")
 def home():
 
 
@@ -59,3 +59,8 @@ def home():
     return "hej"
 
 
+
+@app.route("/")
+def hej():
+    #return "hejd"
+    return render_template("sp.htm")
