@@ -70,6 +70,7 @@ commonerrors=[
         (' for ',' four '),
         (' dan ',' then '),
         (' done ',' then '),
+        (' such that ',' then '),
         (' we get ',' then '),
         (' whole ',' close '),
         (' closed ',' close '),
