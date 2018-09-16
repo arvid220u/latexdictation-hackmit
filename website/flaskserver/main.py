@@ -90,6 +90,7 @@ commonerrors=[
         (' clubs ',' close '),
         (' eclipse ',' a plus '),
         (' aid ',' a '),
+        (' beat ',' b '),
 
 ]
 
@@ -102,27 +103,37 @@ def replace_symbols(text):
     return text.lower()
 
 
+def endtext(text):
+    text=text.lower().replace('some', 'sum')
+    print(text)
+    text=replace_symbols(text)
+    print(text)
+    if 'sum' not in text and 'integral' not in text:
+        return text2latex(text)
+    
+    r=requests.get("http://api.wolframalpha.com/v2/query?appid="+APPID+"&format=minput&output=json&input="+urllib.parse.quote_plus(text)).json()
+    print(r)
+    try:
+        m = r["queryresult"]["pods"][0]["subpods"][0]["minput"]
+        print(m)
+        process = pexpect.spawn("wolframscript -rawterm")
+        process.expect_exact(":=")
+        process.sendline('TeXForm[HoldForm['+m+']]')
+        process.expect("//TeXForm= .*\n")
+        response = process.after.strip()[len("//TeXForm= "):].strip()
+        return response
+    except:
+        return ' '
+    #text=evaluate(text)
+    print(text)
+    return text
 
 def text2latex(text):
     text=text.lower().replace('some', 'sum')
     print(text)
-"""
-    r=requests.get("http://api.wolframalpha.com/v2/query?appid="+APPID+"&format=minput&output=json&async=0.1&input="+urllib.parse.quote_plus(text)).json()
-    print(r)
-    try:
-        m = r["queryresult"]["pods"][0]["subpods"][0]["minput"]
-        process = pexpect.spawn("wolfram -rawterm")
-        process.expect_exact(":=")
-        process.sendline('TeXForm[HoldForm['+m+']]')
-        process.expect("//TeXForm= .*")
-        response = process.after.strip()[len("//TeXForm= "):-len("In[2]:")].strip()
-        return response
-    except:
-        return ' '
-"""
-    #text=text.replace(' ', '')
     text=replace_symbols(text)
     print(text)
+    #text=text.replace(' ', '')
 
     text=lineareval(text)
 

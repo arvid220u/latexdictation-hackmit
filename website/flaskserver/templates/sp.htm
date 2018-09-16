@@ -137,6 +137,8 @@
         <p id="rawlatex" class="js-copylatex">
         $a^2+b^2=c^2$
         </p>
+        <p id="currrrtext" style="display:none;" class="js-copylatex">
+        </p>
         <button id="copybutton" class="js-emailcopybtn">Copy LaTeX Code</button>
     <script>
         var copyEmailBtn = document.querySelector('.js-emailcopybtn');
@@ -508,6 +510,7 @@ border-radius: 0.3em;
 				return
 			}
                     document.getElementById("rawlatex").innerHTML = "$" + mytext + "$";
+                    document.getElementById("currrrtext").innerHTML = text;
 
                     document.getElementById("displaylatex").innerHTML = "$$" + mytext + "$$";
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,"displaylatex"]);
@@ -535,6 +538,21 @@ border-radius: 0.3em;
                 document.getElementById("stopBtn").style.display = "none";
                 document.getElementById("editorcontextualstatusplaceholder").style.display = "inline";
             startBtn.disabled = false;
+            fetch('/api2/' + document.getElementById("currrrtext").innerHTML)
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(mytext) {
+                    console.log(mytext)
+
+			if(mytext==' '){
+				return
+			}
+                    document.getElementById("rawlatex").innerHTML = "$" + mytext + "$";
+
+                    document.getElementById("displaylatex").innerHTML = "$$" + mytext + "$$";
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,"displaylatex"]);
+                });
         }
     </script>
 <script src="./spp/htmlpreview.min.js"></script><script>HTMLPreview.replaceAssets();</script><script src="./spp/f.txt"></script><script>/******/ (function(modules) { // webpackBootstrap
