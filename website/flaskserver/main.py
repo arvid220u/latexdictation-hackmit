@@ -1,27 +1,9 @@
-from shuntington import evaluate
+import requests
+import urllib
 
-mathSymbols=[
-        ('plus', '+'),
-        ('minus', '-'),
-        ('over', '/'),
-        ('divided by', '/'),
-        ('divide', '/'),
-        ('times', '*'),
-        ('by', '*'),
-        ('open', '('),
-        ('close', ')'),
-]
-
-def replace_symbols(text):
-    for s in mathSymbols:
-        text=text.replace(s[0], s[1])
-    return text
+APPID="V5KXEA-HL5T9LY4T7"
 
 def text2latex(text):
     print(text)
-    text=text.replace(' ', '')
-    text=replace_symbols(text)
-    print(text)
-    text=evaluate(text)
-    print(text)
-    return text
+    r=requests.get("http://api.wolframalpha.com/v2/query?appid="+APPID+"&format=plaintext&output=json&async=0.1&input="+urllib.parse.quote_plus(text)).json()
+    return r["queryresult"]["pods"][0]["subpods"][0]["plaintext"]

@@ -389,12 +389,15 @@
                 hypothesisDiv.innerHTML = text;
 
 
-            fetch('https://matteklubbenfibonacci.se/api/' + text)
+            fetch('/api/' + text)
                 .then(function(response) {
                     return response.text();
                 })
                 .then(function(mytext) {
                     console.log(mytext)
+			if(mytext==' '){
+				return
+			}
                     document.getElementById("rawlatex").innerHTML = mytext;
                     document.getElementById("displaylatex").innerHTML = "$$" + mytext + "$$";
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,"displaylatex"]);
