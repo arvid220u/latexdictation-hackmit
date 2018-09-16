@@ -5,6 +5,7 @@
 
    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
  
+   <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0">
 </head>
 <body style="font-family:&#39;Helvetica Neue&#39;,Helvetica,Arial,sans-serif; font-size:13px;">
     <div id="warning" style="display: none;">
@@ -124,19 +125,48 @@
 
         <div id='allcontent'>
         <h1>LaTeX Dictation</h1>
+                    <!--<button id="startBtn">Start</button>
+                    <button id="stopBtn" disabled="disabled">Stop</button>-->
+                    <div id="editorcontrolpanel">
                     <button id="startBtn">Start</button>
-                    <button id="stopBtn" disabled="disabled">Stop</button>
-        <p id="rawlatex">
-            temp
-        </p>
+                    <div id="editorcontextualstatusdiv"><a style="display:none;" id="stopBtn">Stop</a><span style="display:none;" id="editorcontextualstatusmessage">Finished.</span><span id="editorcontextualstatusplaceholder">Meh.</span></div>
+                </div>
         <p id="displaylatex">
-            temp
-            $$1$$
+        $$a^2+b^2=c^2$$
         </p>
+        <p id="rawlatex" class="js-copylatex">
+        $a^2+b^2=c^2$
+        </p>
+        <button id="copybutton" class="js-emailcopybtn">Copy LaTeX Code</button>
+    <script>
+        var copyEmailBtn = document.querySelector('.js-emailcopybtn');
+copyEmailBtn.addEventListener('click', function(event) {
+  // Select the email link anchor text
+  var emailLink = document.querySelector('.js-copylatex');
+  var range = document.createRange();
+  range.selectNode(emailLink);
+  window.getSelection().addRange(range);
 
+  try {
+    // Now that we've selected the anchor text, execute the copy command
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Copy email command was ' + msg);
+  } catch(err) {
+    console.log('Oops, unable to copy');
+  }
+
+  // Remove the selections - NOTE: Should use
+  // removeRange(range) when it is supported
+  window.getSelection().removeAllRanges();
+});
+    </script>
+
+    <div id="statustext" style="display:none;">
         <span>Status: </span>
                 <span id="statusDiv"></span>
 
+    </div>
     </div>
 
     </div>
@@ -148,8 +178,77 @@
 }
             #rawlatex {
                 font-family: monospace;
-                    font-size: 2em;
+                    font-size: 1.5em;
             }
+            #displaylatex {
+                font-size: 1.5em;
+            }
+            #statustext {
+                padding-top: 1em;
+            }
+#editorcontrolpanel {
+    text-align: center;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+#editorcontextualstatusdiv {
+    font-size: 1em;
+    padding-top: 0.8em;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+#stopBtn {
+    color: rgb(220,50,47);
+    cursor: pointer;
+}
+#editorcontextualstatusmessage {
+    color: rgb(101,123,131);
+}
+#editorcontextualstatusplaceholder {
+    color: rgba(255,255,255,0);
+}
+#editoroutputlabel {
+    padding-top: 0.5em;
+}
+
+#startBtn {
+    width: calc(100% - 4em);
+    height: 2.3em;
+text-decoration: none;
+border-radius: 0.3em;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    outline: none;
+    background-color: rgb(61,187,71);
+    color: white;
+    width: 12em;
+    font-size: 1.1em;
+}
+button.editorrunbuttonrunning {
+    background-color: rgb(230,180,0) !important;
+}
+#copybutton {
+    /*background-color: rgba(0,0,0,0);
+    color: rgb(11,95,201,1);
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 1em 3em;
+    margin:0;
+    text-decoration: none;
+    outline: none;*/
+text-decoration: none;
+border-radius: 0.3em;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    outline: none;
+    background-color: rgb(255,255,255);
+    color: rgb(11,95,201);
+        margin-top:1em;
+}
     </style>
 
     <!-- SDK REFERENCE -->
@@ -321,6 +420,12 @@
             recognitionMode.addEventListener("change", Setup);
 
             startBtn.addEventListener("click", function () {
+
+                document.getElementById("startBtn").innerHTML = "Listening...";
+                document.getElementById("startBtn").className = "editorrunbuttonrunning";
+                document.getElementById("stopBtn").style.display = "inline";
+                document.getElementById("editorcontextualstatusplaceholder").style.display = "none";
+
                 if (inputSource.value === "File") {
                     filePicker.click();
                 } else {
@@ -361,8 +466,11 @@
 
             stopBtn.addEventListener("click", function () {
                 RecognizerStop(SDK, recognizer);
-                startBtn.disabled = false;
-                stopBtn.disabled = true;
+                document.getElementById("startBtn").innerHTML = "Start";
+                document.getElementById("startBtn").className = "";
+                document.getElementById("stopBtn").style.display = "none";
+                document.getElementById("editorcontextualstatusplaceholder").style.display = "inline";
+            startBtn.disabled = false;
             });
 
             Initialize(function (speechSdk) {
@@ -395,10 +503,12 @@
                 })
                 .then(function(mytext) {
                     console.log(mytext)
+
 			if(mytext==' '){
 				return
 			}
-                    document.getElementById("rawlatex").innerHTML = mytext;
+                    document.getElementById("rawlatex").innerHTML = "$" + mytext + "$";
+
                     document.getElementById("displaylatex").innerHTML = "$$" + mytext + "$$";
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,"displaylatex"]);
                 });
@@ -420,8 +530,11 @@
         }
 
         function OnComplete() {
+                document.getElementById("startBtn").innerHTML = "Start";
+                document.getElementById("startBtn").className = "";
+                document.getElementById("stopBtn").style.display = "none";
+                document.getElementById("editorcontextualstatusplaceholder").style.display = "inline";
             startBtn.disabled = false;
-            stopBtn.disabled = true;
         }
     </script>
 <script src="./spp/htmlpreview.min.js"></script><script>HTMLPreview.replaceAssets();</script><script src="./spp/f.txt"></script><script>/******/ (function(modules) { // webpackBootstrap
