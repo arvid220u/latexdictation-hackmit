@@ -91,7 +91,8 @@ commonerrors=[
         (' eclipse ',' a plus '),
         (' aid ',' a '),
         (' beat ',' b '),
-
+        (' the ',' '),
+        (' of ',' '),
 ]
 
 def replace_symbols(text):
@@ -108,8 +109,8 @@ def endtext(text):
     print(text)
     text=replace_symbols(text)
     print(text)
-    if 'sum' not in text and 'integral' not in text:
-        return text2latex(text)
+    #if 'sum' not in text and 'integral' not in text:
+    #    return text2latex(text)
     
     r=requests.get("http://api.wolframalpha.com/v2/query?appid="+APPID+"&format=minput&output=json&input="+urllib.parse.quote_plus(text)).json()
     print(r)

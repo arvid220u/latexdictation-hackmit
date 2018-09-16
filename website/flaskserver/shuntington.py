@@ -128,6 +128,8 @@ def lineareval(expression,preans='',prelast='',curx=0):
             dis='\infty '
         if token=='then':
             dis='.\:'
+        if token=='integral':
+            dis='\int '
         if token=='/':
             dis='\\frac{'+last+'}{'
             addl=False
